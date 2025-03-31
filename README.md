@@ -2,13 +2,11 @@
 
 Plataforma web desarrollada con **Angular** para permitir a los ciudadanos reportar incidentes en su comunidad, visualizar reportes cercanos, comentar, y recibir notificaciones en tiempo real.
 
-Este proyecto forma parte de un trabajo académico con enfoque social y tecnológico.
-
 ---
 
 ## 🚀 Tecnologías utilizadas
 
-- Angular 17+
+- Angular 19+
 - Angular Material
 - SCSS
 - Mapbox GL

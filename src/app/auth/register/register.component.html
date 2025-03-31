@@ -1,0 +1,42 @@
+<h2 class="title">Registro de Usuario</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-container">
+    <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nombre completo</mat-label>
+    <input matInput formControlName="nombre" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Correo electrónico</mat-label>
+    <input matInput formControlName="correo" type="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Teléfono</mat-label>
+    <input matInput formControlName="telefono" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ciudad</mat-label>
+    <input matInput formControlName="ciudad" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Dirección</mat-label>
+    <input matInput formControlName="direccion" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Contraseña</mat-label>
+    <input matInput formControlName="password" type="password" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Confirmar contraseña</mat-label>
+    <input matInput formControlName="confirmarPassword" type="password" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" class="submit-btn">
+    Registrarse
+  </button>
+</form>

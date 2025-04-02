@@ -1,42 +1,107 @@
-<h2 class="title">Registro de Usuario</h2>
+<h2 class="title">Registro</h2>
 
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-container">
-    <mat-form-field appearance="outline" class="full-width">
+  <!-- Nombre -->
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Nombre completo</mat-label>
     <input matInput formControlName="nombre" />
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Correo electrónico</mat-label>
-    <input matInput formControlName="correo" type="email" />
-  </mat-form-field>
+  <!-- Tipo de identificación y número -->
+  <div class="double-field">
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo</mat-label>
+      <mat-select formControlName="tipoIdentificacion">
+        <mat-option value="CC">CC</mat-option>
+        <mat-option value="TI">TI</mat-option>
+        <mat-option value="CE">CE</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Teléfono</mat-label>
-    <input matInput formControlName="telefono" />
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Identificación</mat-label>
+      <input matInput formControlName="identificacion" />
+    </mat-form-field>
+  </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Ciudad</mat-label>
-    <input matInput formControlName="ciudad" />
-  </mat-form-field>
+  <!-- Fecha de nacimiento -->
+  <label class="field-label">Fecha de Nacimiento</label>
+  <div class="triple-field">
+    <mat-form-field appearance="outline">
+      <mat-label>Mes</mat-label>
+      <mat-select formControlName="mesNacimiento">
+        <mat-option *ngFor="let mes of meses" [value]="mes">{{ mes }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Día</mat-label>
+      <mat-select formControlName="diaNacimiento">
+        <mat-option *ngFor="let dia of dias" [value]="dia">{{ dia }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Año</mat-label>
+      <mat-select formControlName="anioNacimiento">
+        <mat-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- País y ciudad -->
+  <div class="double-field">
+    <mat-form-field appearance="outline">
+      <mat-label>País</mat-label>
+      <mat-select formControlName="pais">
+        <mat-option value="Colombia">Colombia</mat-option>
+        <!-- Puedes agregar más -->
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ciudad</mat-label>
+      <mat-select formControlName="ciudad">
+        <mat-option value="Armenia">Armenia</mat-option>
+        <!-- Puedes agregar más -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Dirección -->
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Dirección</mat-label>
     <input matInput formControlName="direccion" />
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
+  <!-- Teléfono -->
+  <div class="double-field">
+    <mat-form-field appearance="outline">
+      <mat-label>Indicativo</mat-label>
+      <mat-select formControlName="indicativo">
+        <mat-option value="+57">+57</mat-option>
+        <!-- Otros países -->
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Número de Celular</mat-label>
+      <input matInput formControlName="telefono" />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" floatLabel="auto" class="full-width">
     <mat-label>Contraseña</mat-label>
-    <input matInput formControlName="password" type="password" />
+    <input matInput type="password" formControlName="password" required>
   </mat-form-field>
-
-  <mat-form-field appearance="outline" class="full-width">
+  
+  <mat-form-field appearance="outline" floatLabel="auto" class="full-width">
     <mat-label>Confirmar contraseña</mat-label>
-    <input matInput formControlName="confirmarPassword" type="password" />
-  </mat-form-field>
+    <input matInput type="password" formControlName="confirmarPassword" required>
+  </mat-form-field>  
 
+  <!-- Botón -->
   <button mat-raised-button color="primary" type="submit" class="submit-btn">
-    Registrarse
+    Aceptar
   </button>
 </form>

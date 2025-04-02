@@ -1,1 +1,36 @@
-<p>login works!</p>
+<div class="login-container">
+    <!-- Panel izquierdo para imagen -->
+    <div class="image-panel">
+      <img src="assets/login-image.png" alt="Login Image" />
+    </div>
+  
+    <!-- Panel derecho con el formulario -->
+    <div class="form-panel">
+      <h2 class="title">Iniciar Sesión</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="usuario" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="contrasena" />
+        </mat-form-field>
+  
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+            Iniciar
+          </button>
+          <button mat-raised-button color="accent" type="button" (click)="goToRegister()">
+            Registrarse
+          </button>          
+        </div>
+  
+        <p class="forgot-password">
+          ¿Olvidó su contraseña? Haga click <a href="#">aquí</a>.
+        </p>
+      </form>
+    </div>
+  </div>
+  

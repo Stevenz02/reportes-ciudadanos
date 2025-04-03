@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -23,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
+
 export class RegisterComponent {
 
   registerForm!: FormGroup;
@@ -48,7 +50,7 @@ export class RegisterComponent {
   dias = Array.from({ length: 31 }, (_, i) => i + 1);
   anios = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     // Construcción del formulario con validaciones
     this.registerForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -66,6 +68,11 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', Validators.required]
     }, { validators: passwordMatchValidator });
+  }
+  
+  //Vuelve al login
+  goToLogin() {
+    this.router.navigate(['/auth/login']);
   }
 
   // Al cambiar país, se actualizan las ciudades e indicativo

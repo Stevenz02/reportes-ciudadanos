@@ -25,14 +25,19 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private router: Router) {
     // Crear el formulario con validaciones
     this.loginForm = this.fb.group({
-      usuario: ['', Validators.required],
+      correo: ['', Validators.required],
       contrasena: ['', Validators.required]
     });
   }
 
+  // Redirecciona a la vista de registro
   goToRegister() {
     this.router.navigate(['/auth/register']);
-  }  
+  }
+  // Redirecciona a la vista de recuperación password
+  goToRecuperar() {
+    this.router.navigate(['/auth/recuperar']);
+  }
 
   // Envío del formulario
   onSubmit() {

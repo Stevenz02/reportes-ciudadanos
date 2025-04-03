@@ -3,15 +3,29 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Nueva contraseña</mat-label>
-    <input matInput type="password" formControlName="nuevaContrasena" />
-  </mat-form-field>
+    <input matInput type="password" formControlName="nuevaPassword" />
+    <mat-error *ngIf="form.get('nuevaPassword')?.hasError('required')">
+      La contraseña es obligatoria.
+    </mat-error>
+    <mat-error *ngIf="form.get('nuevaPassword')?.hasError('minlength')">
+      La contraseña debe tener al menos 6 caracteres.
+    </mat-error>
+  </mat-form-field>  
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Confirmar contraseña</mat-label>
-    <input matInput type="password" formControlName="confirmarContrasena" />
+    <input matInput type="password" formControlName="confirmarPassword" />
+    <mat-error *ngIf="form.get('confirmarPassword')?.hasError('passwordMismatch')">
+      Las contraseñas no coinciden.
+    </mat-error>    
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
     Restablecer
   </button>
+
+  <div *ngIf="success" class="success-message">
+    ✅ Contraseña cambiada con éxito. Redirigiendo al login...
+  </div>
 </form>
+

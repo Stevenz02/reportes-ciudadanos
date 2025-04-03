@@ -28,6 +28,15 @@ export class RecuperarComponent {
     });
   }
 
+  //Redirecciona a la vista de restablecer
+  goToRestablecer() {
+    this.router.navigate(['/auth/recuperar/restablecer']);
+  }
+  //Vuelve al login
+  goToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
   onSubmit() {
     if (this.form.valid) {
       const identificacion = this.form.value.identificacion;

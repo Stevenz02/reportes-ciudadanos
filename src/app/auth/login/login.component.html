@@ -10,7 +10,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Correo Electrónico</mat-label>
-          <input matInput formControlName="usuario" />
+          <input matInput formControlName="correo" />
         </mat-form-field>
   
         <mat-form-field appearance="outline" class="full-width">
@@ -28,8 +28,9 @@
         </div>
   
         <p class="forgot-password">
-          ¿Olvidó su contraseña? Haga click <a href="#">aquí</a>.
-        </p>
+          ¿Olvidó su contraseña? Haga clic
+          <button type="button" class="link" (click)="goToRecuperar()">aquí</button>
+        </p>               
       </form>
     </div>
   </div>

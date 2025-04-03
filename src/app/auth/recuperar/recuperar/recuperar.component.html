@@ -6,7 +6,10 @@
     <input matInput formControlName="identificacion" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+  <button mat-raised-button color="primary" (click)="goToRestablecer()">
     Verificar
+  </button>
+  <button mat-raised-button color="primary" (click)="goToLogin()">
+    Cancelar
   </button>
 </form>

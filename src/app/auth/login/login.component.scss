@@ -5,18 +5,19 @@
   
     .image-panel {
       flex: 1;
-      background: #2d2d2d;
+      background-color: #2e2e2e;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 2rem;
-  
+      align-items: center;
+      padding: 1rem;
+    
       img {
-        max-width: 100%;
+        width: 350px;
         height: auto;
-        border-radius: 1rem;
+        object-fit: contain;
+
       }
-    }
+    }    
   
     .form-panel {
       flex: 1;

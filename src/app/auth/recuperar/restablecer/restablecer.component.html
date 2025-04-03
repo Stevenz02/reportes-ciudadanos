@@ -1,0 +1,17 @@
+<h2 class="title">Restablecer Contraseña</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nueva contraseña</mat-label>
+    <input matInput type="password" formControlName="nuevaContrasena" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Confirmar contraseña</mat-label>
+    <input matInput type="password" formControlName="confirmarContrasena" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    Restablecer
+  </button>
+</form>

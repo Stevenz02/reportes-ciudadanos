@@ -1,0 +1,12 @@
+<h2 class="title">Recuperar Contraseña</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ingrese su número de identificación</mat-label>
+    <input matInput formControlName="identificacion" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    Verificar
+  </button>
+</form>

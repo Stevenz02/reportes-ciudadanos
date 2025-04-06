@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 @Component({
   selector: 'app-crear',
@@ -14,6 +17,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatButtonModule
   ],
   templateUrl: './crear.component.html',
@@ -21,52 +25,87 @@ import { Router } from '@angular/router';
 })
 export class CrearComponent {
   form!: FormGroup;
-  success = false;
-  isEditing = false;
+  map!: mapboxgl.Map;
+  marker!: mapboxgl.Marker;
+  selectedImage: File | null = null;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       titulo: ['', Validators.required],
+      categoria: ['', Validators.required],
       descripcion: ['', Validators.required],
-      ubicacion: ['', Validators.required]
+      latitud: [null, Validators.required],
+      longitud: [null, Validators.required],
+      imagen: [null]
+    });
+  }
+
+  ngOnInit(): void {
+    this.initMap();
+  }
+
+  initMap() {
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-75.6811, 4.5339], // Armenia
+      zoom: 12,
+      accessToken: 'pk.eyJ1Ijoic3RldmVuejAyIiwiYSI6ImNtOTNpbHA5MDBucGgyc3B3aGc3NGVjMTIifQ.sWpwCMBLsMpYLuT4MVQ4OA'
     });
 
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { reporte: any };
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    if (state?.reporte) {
-      this.isEditing = true;
-      this.form.patchValue(state.reporte);
+    this.marker = new mapboxgl.Marker({ draggable: true })
+      .setLngLat(this.map.getCenter())
+      .addTo(this.map);
+
+    this.updateFormLocation(this.map.getCenter());
+
+    this.marker.on('dragend', () => {
+      const lngLat = this.marker.getLngLat();
+      this.updateFormLocation(lngLat);
+    });
+  }
+
+  updateFormLocation(coords: mapboxgl.LngLat) {
+    this.form.patchValue({
+      latitud: coords.lat,
+      longitud: coords.lng
+    });
+  }
+
+  ubicacionAutomatica() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const coords = [position.coords.longitude, position.coords.latitude] as [number, number];
+        this.map.flyTo({ center: coords, zoom: 14 });
+        this.marker.setLngLat(coords);
+        this.updateFormLocation(new mapboxgl.LngLat(coords[0], coords[1]));
+      });
+    } else {
+      alert('Geolocalización no soportada por tu navegador.');
+    }
+  }
+
+  onImageSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedImage = file;
+      this.form.patchValue({ imagen: file });
     }
   }
 
   onSubmit() {
     if (this.form.valid) {
-      const reportes = JSON.parse(localStorage.getItem('reportes') || '[]');
-      if (this.isEditing) {
-        // Editar reporte existente
-        const updatedReportes = reportes.map((r: any) =>
-          r.titulo === this.form.value.titulo ? this.form.value : r
-        );
-        localStorage.setItem('reportes', JSON.stringify(updatedReportes));
-        alert('✏️ Reporte editado con éxito');
-      } else {
-        // Crear nuevo reporte
-        reportes.push(this.form.value);
-        localStorage.setItem('reportes', JSON.stringify(reportes));
-        alert('✅ Reporte creado con éxito');
-      }
-
-      this.success = true;
-
-      setTimeout(() => {
-        this.success = false;
-        this.router.navigate(['/auth/reportes/lista']);
-      }, 1500);
+      console.log('✅ Reporte enviado:', this.form.value);
+      alert('¡Reporte creado exitosamente!');
+      this.router.navigate(['/auth/reportes/lista']);
     } else {
       this.form.markAllAsTouched();
     }
   }
+
+  cancelar() {
+    this.router.navigate(['/auth/reportes/lista']);
+  }
 }
-
-

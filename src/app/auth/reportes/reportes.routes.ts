@@ -1,9 +1,13 @@
 import { Routes } from '@angular/router';
-import { CrearComponent } from './crear/crear.component';
-import { ListaComponent } from './lista/lista.component';
 
 export const REPORTES_ROUTES: Routes = [
-  { path: 'crear', component: CrearComponent },
-  { path: 'lista', component: ListaComponent },
-  { path: '**', redirectTo: 'lista' } // Redirecciona a lista si la ruta no existe
+  {
+    path: 'crear',
+    loadComponent: () => import('./crear/crear.component').then(m => m.CrearComponent)
+  },
+  {
+    path: 'lista',
+    loadComponent: () => import('./lista/lista.component').then(m => m.ListaComponent)
+  },
+  { path: '**', redirectTo: 'lista' }
 ];

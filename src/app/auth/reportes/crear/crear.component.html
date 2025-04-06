@@ -1,26 +1,43 @@
-<h2 class="title">Crear Reporte</h2>
+<h2 class="title">Cuéntanos qué pasó</h2>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Título del reporte</mat-label>
+
+  <mat-form-field appearance="outline" class="field">
+    <mat-label>Título</mat-label>
     <input matInput formControlName="titulo" />
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field appearance="outline" class="field">
+    <mat-label>Categoría</mat-label>
+    <mat-select formControlName="categoria">
+      <mat-option value="Accidente">Accidente</mat-option>
+      <mat-option value="Emergencia">Emergencia</mat-option>
+      <mat-option value="Otro">Otro</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field">
     <mat-label>Descripción</mat-label>
     <textarea matInput formControlName="descripcion"></textarea>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Ubicación</mat-label>
-    <input matInput formControlName="ubicacion" />
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-    Crear Reporte
-  </button>
-
-  <div *ngIf="success" class="success-message">
-    ✅ Reporte creado con éxito. Redirigiendo...
+  <!-- Mapa -->
+  <div class="map-container">
+    <div id="map"></div>
+    <button mat-raised-button color="primary" type="button" (click)="ubicacionAutomatica()" class="map-button">
+      Ubi-Auto
+    </button>
   </div>
+
+  <!-- Subir imagen -->
+  <div class="upload-container">
+    <label for="fileInput">Sube una imagen</label>
+    <input type="file" id="fileInput" (change)="onImageSelected($event)" />
+  </div>
+
+  <div class="button-group">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Aceptar</button>
+    <button mat-raised-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
+  </div>
+
 </form>

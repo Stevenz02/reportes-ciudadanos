@@ -1,23 +1,58 @@
 .title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-container {
-    max-width: 400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .full-width {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.field {
+  width: 100%;
+}
+
+.map-container {
+  position: relative;
+  height: 250px;
+  margin-bottom: 20px;
+
+  #map {
     width: 100%;
+    height: 100%;
+    border-radius: 8px;
   }
-  
-  .success-message {
-    margin-top: 10px;
-    color: green;
-    text-align: center;
+
+  .map-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
-  
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  label {
+    font-weight: 500;
+  }
+
+  input[type="file"] {
+    border: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 4px;
+  }
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+

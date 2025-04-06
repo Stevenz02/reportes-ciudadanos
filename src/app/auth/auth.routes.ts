@@ -1,20 +1,30 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { RecuperarComponent } from './recuperar/recuperar/recuperar.component';
-import { RestablecerComponent } from './recuperar/restablecer/restablecer.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { REPORTES_ROUTES } from './reportes/reportes.routes';
 
 export const AUTH_ROUTES: Routes = [
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'recuperar', component: RecuperarComponent },
-  { path: 'restablecer', component: RestablecerComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  {
+    path: 'register',
+    loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent)
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'recuperar',
+    loadComponent: () => import('./recuperar/recuperar/recuperar.component').then(m => m.RecuperarComponent)
+  },
+  {
+    path: 'restablecer',
+    loadComponent: () => import('./recuperar/restablecer/restablecer.component').then(m => m.RestablecerComponent)
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
+  },
   {
     path: 'reportes',
-    children: REPORTES_ROUTES
+    loadChildren: () => import('./reportes/reportes.routes').then(m => m.REPORTES_ROUTES)
   },
   { path: '**', redirectTo: 'login' }
 ];
+

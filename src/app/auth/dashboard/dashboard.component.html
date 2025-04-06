@@ -1,23 +1,38 @@
 <div class="dashboard-container">
-    <!-- Menú lateral -->
-    <div class="sidebar" [class.closed]="!menuAbierto">
-      <button class="hamburger" (click)="toggleMenu()">☰</button>
-      <div class="profile">
-        <img src="assets/img/usuarioicono.png" alt="Usuario">
-        <p>Usuario</p>
-      </div>
-      <nav>
-        <a (click)="navegar('/auth/reportes/lista')">📋 Ver todos los reportes</a>
-        <a (click)="navegar('/auth/reportes/crear')">⚠️ Reportar un incidente</a>
-        <a href="#">🗂️ Mis reportes</a>
-        <a href="#">🔔 Notificaciones</a>
-        <a href="#">⚙️ Configuración</a>
-      </nav>
-      <button class="logout" (click)="cerrarSesion()">Cerrar Sesión</button>
+  <aside [class.collapsed]="!menuAbierto">
+    <button (click)="toggleMenu()" class="toggle-btn">
+      ☰
+    </button>
+
+    <div class="menu-item" [class.disabled]="true">
+      🗂️ <span *ngIf="menuAbierto">Ver todos los reportes</span>
     </div>
-  
-    <!-- Contenedor del mapa -->
+
+    <div class="menu-item" (click)="navegar('/auth/reportes/crear')">
+      📝 <span *ngIf="menuAbierto">Reportar un incidente</span>
+    </div>
+
+    <div class="menu-item" (click)="navegar('/auth/reportes/lista')">
+      📋 <span *ngIf="menuAbierto">Mis reportes</span>
+    </div>
+
+    <div class="menu-item" [class.disabled]="true">
+      🔔 <span *ngIf="menuAbierto">Notificaciones</span>
+    </div>
+
+    <div class="menu-item" (click)="navegar('/auth/perfil')">
+      ⚙️ <span *ngIf="menuAbierto">Editar perfil</span>
+    </div>
+
+    <button class="logout-btn" (click)="cerrarSesion()">
+      🔒 <span *ngIf="menuAbierto">Cerrar Sesión</span>
+    </button>
+  </aside>
+
+  <main>
     <div id="map" class="map-container"></div>
-  </div>
+  </main>
+</div>
+
   
   

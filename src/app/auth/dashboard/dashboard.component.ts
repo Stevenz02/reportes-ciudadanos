@@ -24,7 +24,7 @@ export class DashboardComponent {
 
   navegar(ruta: string) {
     this.router.navigate([ruta]);
-  }
+  }  
 
   cerrarSesion() {
     this.router.navigate(['/auth/login']);

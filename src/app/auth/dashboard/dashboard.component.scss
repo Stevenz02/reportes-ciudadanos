@@ -1,83 +1,88 @@
 .dashboard-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-  }
-  
-  .sidebar {
+  display: flex;
+  height: 100vh;
+
+  aside {
+    background: #f4f4f4;
     width: 250px;
-    background-color: #fff;
-    border-right: 1px solid #ddd;
-    padding: 20px;
+    padding: 1rem;
+    transition: width 0.3s;
     position: relative;
-    transition: width 0.3s ease;
-    
-    &.closed {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
+    &.collapsed {
       width: 60px;
-  
-      nav a, .profile p, .logout {
+
+      .menu-item span,
+      .logout-btn span {
         display: none;
       }
     }
-  
-    .hamburger {
-      position: absolute;
-      top: 15px;
-      left: 15px;
+
+    .toggle-btn {
       background: none;
       border: none;
-      font-size: 24px;
+      font-size: 1.5rem;
       cursor: pointer;
+      margin-bottom: 1rem;
     }
-  
-    .profile {
-      text-align: center;
-      margin-top: 50px;
-  
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 100%;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 5px;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #e0e0e0;
       }
-  
-      p {
-        margin-top: 10px;
-      }
-    }
-  
-    nav {
-      margin-top: 30px;
-  
-      a {
-        display: block;
-        margin-bottom: 15px;
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        cursor: pointer;
-  
+
+      &.disabled {
+        cursor: not-allowed;
+        color: #999;
+        opacity: 0.7;
+
         &:hover {
-          color: #007bff;
+          background: none;
         }
       }
     }
-  
-    .logout {
-      margin-top: auto;
-      width: 100%;
-      padding: 10px;
-      background-color: #dc3545;
+
+    .logout-btn {
+      background: #e53935;
       color: white;
       border: none;
-      cursor: pointer;
+      padding: 0.5rem;
+      width: 100%;
       border-radius: 5px;
-  
+      cursor: pointer;
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      max-width: 200px;
+      margin-inline: auto;
+    
       &:hover {
-        background-color: #c82333;
+        background: #c62828;
       }
+    }    
+  }
+
+  main {
+    flex: 1;
+    position: relative;
+
+    #map {
+      width: 100%;
+      height: 100%;
     }
   }
-  
+}
   .map-container {
     width: 100%;
     height: 100vh;

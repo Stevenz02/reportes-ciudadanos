@@ -25,6 +25,11 @@ export const AUTH_ROUTES: Routes = [
     path: 'reportes',
     loadChildren: () => import('./reportes/reportes.routes').then(m => m.REPORTES_ROUTES)
   },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent)
+  },
   { path: '**', redirectTo: 'login' }
 ];
+
 

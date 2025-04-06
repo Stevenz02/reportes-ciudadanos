@@ -1,0 +1,19 @@
+<div class="detalle-container">
+    <h2>📝 Detalle del Reporte</h2>
+  
+    <div class="detalle-info">
+      <p><strong>📌 Título:</strong> {{ reporte.titulo }}</p>
+      <p><strong>🏷️ Categoría:</strong> {{ reporte.categoria }}</p>
+      <p><strong>📝 Descripción:</strong> {{ reporte.descripcion }}</p>
+      <p><strong>📍 Ubicación:</strong> Lat: {{ reporte.latitud }}, Lng: {{ reporte.longitud }}</p>
+  
+      <div class="detalle-imagen" *ngIf="reporte.imagen">
+        <img [src]="reporte.imagen" alt="Imagen del Reporte" />
+      </div>
+    </div>
+  
+    <button mat-raised-button color="primary" (click)="volver()">
+      🔙 Volver a la Lista
+    </button>
+  </div>
+  

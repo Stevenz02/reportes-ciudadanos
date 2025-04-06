@@ -1,4 +1,4 @@
-<h2 class="title">Cuéntanos qué pasó</h2>
+<h2 class="title">{{ isEditing ? 'Editar Reporte' : 'Crear Reporte' }}</h2>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
 
@@ -36,8 +36,12 @@
   </div>
 
   <div class="button-group">
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Aceptar</button>
-    <button mat-raised-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ isEditing ? 'Guardar cambios' : 'Aceptar' }}
+    </button>    
+    <button mat-raised-button color="warn" type="button" (click)="cancelar()">
+      {{ isEditing ? 'Cancelar edición' : 'Cancelar' }}
+    </button>    
   </div>
 
 </form>

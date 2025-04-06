@@ -1,14 +1,25 @@
-<h2 class="title">Mis Reportes</h2>
+<h2 class="title">📋 Mis Reportes</h2>
+
+<button mat-raised-button color="accent" (click)="volverDashboard()">Volver al Dashboard</button>
 
 <div *ngIf="reportes.length > 0; else noReportes">
   <div *ngFor="let reporte of reportes" class="reporte-card">
-    <h3>{{ reporte.titulo }}</h3>
-    <p><strong>Descripción:</strong> {{ reporte.descripcion }}</p>
-    <p><strong>Ubicación:</strong> {{ reporte.ubicacion }}</p>
-
+    <div class="reporte-info">
+      <h3>{{ reporte.titulo }}</h3>
+      <p><strong>Categoría:</strong> {{ reporte.categoria }}</p>
+      <p><strong>Descripción:</strong> {{ reporte.descripcion }}</p>
+      <p><strong>Ubicación:</strong> Lat: {{ reporte.latitud }}, Lng: {{ reporte.longitud }}</p>
+    </div>
     <div class="button-group">
-      <button mat-raised-button color="primary" (click)="editarReporte(reporte)">Editar</button>
-      <button mat-raised-button color="warn" (click)="eliminarReporte(reporte.id)">Eliminar</button>
+      <button mat-raised-button color="accent" (click)="editarReporte(reporte)">
+        ✏️ Editar
+      </button>
+      <button mat-raised-button color="primary" (click)="verDetalle(reporte)">
+        🔍 Ver Detalle
+      </button>
+      <button mat-raised-button color="warn" (click)="eliminarReporte(reporte.id)">
+        🗑️ Eliminar
+      </button>      
     </div>
   </div>
 </div>

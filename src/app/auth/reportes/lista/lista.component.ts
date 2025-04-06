@@ -23,13 +23,23 @@ export class ListaComponent {
 
   editarReporte(reporte: any) {
     this.router.navigate(['/auth/reportes/crear'], { state: { reporte } });
+  }  
+
+  verDetalle(reporte: any) {
+    this.router.navigate(['/auth/reportes/detalle'], { state: { reporte } });
   }
 
   eliminarReporte(reporteId: string) {
-    this.reportes = this.reportes.filter(r => r.titulo !== reporteId);
+    this.reportes = this.reportes.filter(r => r.id !== reporteId);
     localStorage.setItem('reportes', JSON.stringify(this.reportes));
     alert('🗑️ Reporte eliminado con éxito');
+    this.cargarReportes();
   }
+  
+  volverDashboard() {
+    this.router.navigate(['/auth/dashboard']);
+  }
+  
 }
 
 

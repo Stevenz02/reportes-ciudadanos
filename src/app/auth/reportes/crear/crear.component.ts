@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-crear',
@@ -28,6 +29,9 @@ export class CrearComponent {
   map!: mapboxgl.Map;
   marker!: mapboxgl.Marker;
   selectedImage: File | null = null;
+  isEditing = false;
+  reporteId: string | null = null;
+
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
@@ -38,7 +42,16 @@ export class CrearComponent {
       longitud: [null, Validators.required],
       imagen: [null]
     });
-  }
+  
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { reporte: any };
+  
+    if (state?.reporte) {
+      this.isEditing = true;
+      this.reporteId = state.reporte.id;
+      this.form.patchValue(state.reporte);
+    }
+  }  
 
   ngOnInit(): void {
     this.initMap();
@@ -90,21 +103,44 @@ export class CrearComponent {
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      this.selectedImage = file;
-      this.form.patchValue({ imagen: file });
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.form.patchValue({ imagen: reader.result as string });
+      };
+      reader.readAsDataURL(file); // Esto convierte a base64
     }
   }
+  
+  
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('✅ Reporte enviado:', this.form.value);
-      alert('¡Reporte creado exitosamente!');
+      const reportes = JSON.parse(localStorage.getItem('reportes') || '[]');
+  
+      if (this.isEditing && this.reporteId) {
+        // Edición
+        const index = reportes.findIndex((r: any) => r.id === this.reporteId);
+        if (index !== -1) {
+          reportes[index] = { id: this.reporteId, ...this.form.value };
+        }
+        alert('✏️ Reporte editado con éxito');
+      } else {
+        // Creación
+        const nuevoReporte = {
+          id: uuidv4(),
+          ...this.form.value
+        };
+        reportes.push(nuevoReporte);
+        alert('✅ Reporte creado con éxito');
+      }
+  
+      localStorage.setItem('reportes', JSON.stringify(reportes));
       this.router.navigate(['/auth/reportes/lista']);
     } else {
       this.form.markAllAsTouched();
     }
   }
-
+  
   cancelar() {
     this.router.navigate(['/auth/reportes/lista']);
   }

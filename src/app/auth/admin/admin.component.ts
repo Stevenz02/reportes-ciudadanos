@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-lista',
+  selector: 'app-admin-lista',
   standalone: true,
   imports: [CommonModule, MatButtonModule],
-  templateUrl: './lista.component.html',
-  styleUrls: ['./lista.component.scss']
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.scss']
 })
-export class ListaComponent {
+export class AdminComponent {
   reportes: any[] = [];
 
   constructor(private router: Router) {
@@ -21,12 +21,14 @@ export class ListaComponent {
     this.reportes = JSON.parse(localStorage.getItem('reportes') || '[]');
   }
 
-  editarReporte(reporte: any) {
-    this.router.navigate(['/auth/reportes/crear'], { state: { reporte } });
-  }  
-
-  verDetalle(reporte: any) {
-    this.router.navigate(['/auth/reportes/detalle'], { state: { reporte } });
+  cambiarEstado(reporte: any, nuevoEstado: string) {
+    const index = this.reportes.findIndex(r => r.id === reporte.id);
+    if (index !== -1) {
+      this.reportes[index].estado = nuevoEstado;
+      localStorage.setItem('reportes', JSON.stringify(this.reportes));
+      alert(`🔔 Estado del reporte actualizado a "${nuevoEstado}"`);
+      this.cargarReportes();
+    }
   }
 
   eliminarReporte(reporteId: string) {
@@ -35,10 +37,9 @@ export class ListaComponent {
     alert('🗑️ Reporte eliminado con éxito');
     this.cargarReportes();
   }
-  
-  volverDashboard() {
-    this.router.navigate(['/auth/dashboard']);
-  }
+
+  cerrarSesion() {
+    localStorage.removeItem('usuarioActual');
+    this.router.navigate(['/auth/login']);
+  }  
 }
-
-

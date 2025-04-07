@@ -1,6 +1,8 @@
-<h2 class="title">📋 Mis Reportes</h2>
+<h2 class="title">📋 Panel de Administración de Reportes</h2>
 
-<button mat-raised-button color="accent" (click)="volverDashboard()">Volver al Dashboard</button>
+<button mat-raised-button color="warn" (click)="cerrarSesion()">
+  🔒 Cerrar Sesión
+</button>
 
 <div *ngIf="reportes.length > 0; else noReportes">
   <div *ngFor="let reporte of reportes" class="reporte-card">
@@ -20,14 +22,16 @@
         </span>
       </p>
     </div>
+
     <div class="button-group">
-      <button mat-raised-button color="accent" (click)="editarReporte(reporte)">✏️ Editar</button>
-      <button mat-raised-button color="primary" (click)="verDetalle(reporte)">🔍 Ver Detalle</button>
+      <button mat-raised-button color="primary" (click)="cambiarEstado(reporte, 'Aprobado')">✅ Aprobar</button>
+      <button mat-raised-button color="warn" (click)="cambiarEstado(reporte, 'Rechazado')">❌ Rechazar</button>
       <button mat-raised-button color="warn" (click)="eliminarReporte(reporte.id)">🗑️ Eliminar</button>
     </div>
   </div>
 </div>
 
 <ng-template #noReportes>
-  <p>No tienes reportes registrados.</p>
+  <p>No hay reportes registrados por los usuarios.</p>
 </ng-template>
+

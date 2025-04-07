@@ -118,16 +118,17 @@ export class CrearComponent {
       const reportes = JSON.parse(localStorage.getItem('reportes') || '[]');
   
       if (this.isEditing && this.reporteId) {
-        // Edición
+        // Modo Edición
         const index = reportes.findIndex((r: any) => r.id === this.reporteId);
         if (index !== -1) {
-          reportes[index] = { id: this.reporteId, ...this.form.value };
+          reportes[index] = { id: this.reporteId, estado: reportes[index].estado, ...this.form.value };
+          alert('✏️ Reporte editado con éxito');
         }
-        alert('✏️ Reporte editado con éxito');
       } else {
-        // Creación
+        // Modo Creación
         const nuevoReporte = {
           id: uuidv4(),
+          estado: 'Pendiente', // Estado por defecto al crear
           ...this.form.value
         };
         reportes.push(nuevoReporte);
@@ -139,7 +140,7 @@ export class CrearComponent {
     } else {
       this.form.markAllAsTouched();
     }
-  }
+  }  
   
   cancelar() {
     this.router.navigate(['/auth/reportes/lista']);

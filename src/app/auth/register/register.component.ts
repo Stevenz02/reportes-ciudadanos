@@ -90,12 +90,22 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const userData = this.registerForm.value;
   
-      // Guarda los datos del usuario actual
+      // ✅ Paso 1: Traemos el array de usuarios existente
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  
+      // ✅ Paso 2: Agregamos el nuevo usuario al array
+      usuarios.push(userData);
+  
+      // ✅ Paso 3: Guardamos el array actualizado en el localStorage
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  
+      // ✅ Paso 4: (Opcional) Guardamos el usuario actual si quieres que quede registrado en sesión
       localStorage.setItem('usuarioActual', JSON.stringify(userData));
   
       console.log('✅ Registro guardado en localStorage:', userData);
   
-      // Redirige al login después del registro
+      // ✅ Paso 5: Redirige al login después del registro
+      alert('✅ Registro exitoso. Ahora puedes iniciar sesión.');
       this.router.navigate(['/auth/login']);
     } else {
       this.registerForm.markAllAsTouched();

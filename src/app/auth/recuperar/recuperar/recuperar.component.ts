@@ -35,15 +35,19 @@ export class RecuperarComponent {
 
   onSubmit() {
     if (this.form.valid) {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
       const identificacion = this.form.value.identificacion;
-      console.log('Identificación enviada:', identificacion);
   
-      localStorage.setItem('identificacionRecuperar', identificacion);
+      const usuarioEncontrado = usuarios.find((usuario: any) => usuario.identificacion === identificacion);
   
-      this.router.navigate(['/auth/restablecer']);
+      if (usuarioEncontrado) {
+        localStorage.setItem('identificacionRecuperar', identificacion);
+        this.router.navigate(['/auth/recuperar/restablecer']);
+      } else {
+        alert('❌ Usuario no encontrado');
+      }
     } else {
       this.form.markAllAsTouched();
     }
-  }  
+  }     
 }
-

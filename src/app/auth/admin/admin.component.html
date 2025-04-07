@@ -1,6 +1,8 @@
 <h2 class="title">📋 Panel de Administración de Reportes</h2>
 
-<button mat-raised-button color="accent" (click)="volverDashboard()">Volver al Dashboard</button>
+<button mat-raised-button color="warn" (click)="cerrarSesion()">
+  🔒 Cerrar Sesión
+</button>
 
 <div *ngIf="reportes.length > 0; else noReportes">
   <div *ngFor="let reporte of reportes" class="reporte-card">

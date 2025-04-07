@@ -38,7 +38,8 @@ export class AdminComponent {
     this.cargarReportes();
   }
 
-  volverDashboard() {
-    this.router.navigate(['/auth/dashboard']);
-  }
+  cerrarSesion() {
+    localStorage.removeItem('usuarioActual');
+    this.router.navigate(['/auth/login']);
+  }  
 }

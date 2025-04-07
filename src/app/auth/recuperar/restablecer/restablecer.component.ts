@@ -32,21 +32,22 @@ export class RestablecerComponent {
 
   onSubmit() {
     if (this.form.valid && this.passwordsCoinciden()) {
-      const identificacionRecuperar = localStorage.getItem('identificacionRecuperar');
-      const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
+      const identificacion = localStorage.getItem('identificacionRecuperar');
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   
-      console.log('Identificación almacenada:', identificacionRecuperar);
-      console.log('Usuario actual:', usuarioActual);
+      const index = usuarios.findIndex(
+        (usuario: any) => String(usuario.identificacion) === String(identificacion)
+      );      
   
-      if (usuarioActual && usuarioActual.identificacion === identificacionRecuperar) {
-        // ✅ Cambiar la contraseña
-        usuarioActual.password = this.form.value.nuevaPassword;
-        localStorage.setItem('usuarioActual', JSON.stringify(usuarioActual));
+      if (index !== -1) {
+        usuarios[index].password = this.form.value.nuevaPassword;
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
   
-        this.success = true;
+        alert('✅ Contraseña actualizada correctamente');
+  
         setTimeout(() => {
           this.router.navigate(['/auth/login']);
-        }, 2500);
+        }, 1500);
       } else {
         alert('❌ Usuario no encontrado');
       }

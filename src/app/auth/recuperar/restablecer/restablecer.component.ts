@@ -32,10 +32,33 @@ export class RestablecerComponent {
 
   onSubmit() {
     if (this.form.valid && this.passwordsCoinciden()) {
-      this.success = true;
-      setTimeout(() => {
-        this.router.navigate(['/auth/login']);
-      }, 2500);
+      const nuevaPassword = this.form.value.nuevaPassword;
+      const identificacion = localStorage.getItem('identificacionRecuperar');
+
+      if (identificacion) {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+        const usuarioIndex = usuarios.findIndex((u: any) => u.identificacion === identificacion);
+
+        if (usuarioIndex !== -1) {
+          usuarios[usuarioIndex].password = nuevaPassword;
+          localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+          // ✅ Limpiar identificación temporal
+          localStorage.removeItem('identificacionRecuperar');
+
+          this.success = true;
+
+          setTimeout(() => {
+            this.router.navigate(['/auth/login']);
+          }, 2500);
+        } else {
+          alert('❌ Usuario no encontrado');
+        }
+      } else {
+        alert('❌ No se encontró la identificación, intente nuevamente.');
+        this.router.navigate(['/auth/recuperar']);
+      }
     } else {
       this.form.markAllAsTouched();
     }
@@ -46,7 +69,7 @@ export class RestablecerComponent {
   }
 }
 
-// ✅ Validador personalizado (afuera de la clase)
+// ✅ Validador personalizado
 export const passwordMatchValidator: ValidatorFn = (form: AbstractControl): ValidationErrors | null => {
   const password = form.get('nuevaPassword');
   const confirmPassword = form.get('confirmarPassword');
@@ -65,3 +88,4 @@ export const passwordMatchValidator: ValidatorFn = (form: AbstractControl): Vali
 
   return mismatch ? { passwordMismatch: true } : null;
 };
+

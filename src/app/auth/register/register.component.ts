@@ -88,14 +88,19 @@ export class RegisterComponent {
   // Enviar formulario si es válido
   onSubmit() {
     if (this.registerForm.valid) {
-      const datos = this.registerForm.value;
-      alert('¡Registro exitoso!');
-      console.log('✅ Registro enviado:', datos);
-      // this.registerForm.reset(); // ← Descomenta si quieres reiniciar
+      const userData = this.registerForm.value;
+  
+      // Guarda los datos del usuario actual
+      localStorage.setItem('usuarioActual', JSON.stringify(userData));
+  
+      console.log('✅ Registro guardado en localStorage:', userData);
+  
+      // Redirige al login después del registro
+      this.router.navigate(['/auth/login']);
     } else {
-      this.registerForm.markAllAsTouched(); // Fuerza la visualización de errores
+      this.registerForm.markAllAsTouched();
     }
-  }
+  }  
 }
 
 // Validador para asegurar que las contraseñas coincidan

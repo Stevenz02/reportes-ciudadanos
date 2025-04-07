@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -14,40 +15,63 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm!: FormGroup;
+  isLoading = false; // 🚀 Loading para el botón
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    // Crear el formulario con validaciones
+  constructor(private fb: FormBuilder, private router: Router, private snackBar: MatSnackBar) {
     this.loginForm = this.fb.group({
-      correo: ['', Validators.required],
+      correo: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required]
     });
   }
 
-  // Redirecciona a la vista de registro
   goToRegister() {
     this.router.navigate(['/auth/register']);
   }
-  // Redirecciona a la vista de recuperación password
+
   goToRecuperar() {
     this.router.navigate(['/auth/recuperar']);
   }
 
-  // Envío del formulario
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('✅ Login:', this.loginForm.value);
-      // Aquí puedes conectar con tu backend
+      this.isLoading = true; // ⏳ Activa loading
+
+      const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
+
+      setTimeout(() => { // Simulamos pequeño tiempo de espera
+        if (
+          usuarioActual &&
+          this.loginForm.value.correo === usuarioActual.correo &&
+          this.loginForm.value.contrasena === usuarioActual.password
+        ) {
+          this.mostrarSnackBar('✅ Inicio de sesión exitoso', 'success');
+          this.router.navigate(['/auth/dashboard']);
+          this.isLoading = false; // 🔚 Desactiva loading
+          return;
+        } else {
+          this.mostrarSnackBar('❌ Usuario o contraseña incorrectos', 'error');
+          this.isLoading = false; // 🔚 Desactiva loading
+        }
+      }, 800); // Simulación para UX
     } else {
-      console.log('❌ Formulario inválido');
       this.loginForm.markAllAsTouched();
     }
   }
+
+  mostrarSnackBar(mensaje: string, tipo: 'success' | 'error') {
+    this.snackBar.open(mensaje, 'Aceptar', {
+      duration: 3000,
+      panelClass: tipo === 'success' ? ['snackbar-success'] : ['snackbar-error']
+    });
+  }
 }
+
 

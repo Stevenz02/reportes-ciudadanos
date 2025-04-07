@@ -1,37 +1,36 @@
 <div class="login-container">
-    <!-- Panel izquierdo para imagen -->
-    <div class="image-panel">
-      <img src="assets/img/ImagenLogin1.png" alt="Imagen de Login" />
-    </div>
-  
-    <!-- Panel derecho con el formulario -->
-    <div class="form-panel">
-      <h2 class="title">Iniciar Sesión</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Correo Electrónico</mat-label>
-          <input matInput formControlName="correo" />
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" formControlName="contrasena" />
-        </mat-form-field>
-  
-        <div class="button-group">
-          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-            Iniciar
-          </button>
-          <button mat-raised-button color="accent" type="button" (click)="goToRegister()">
-            Registrarse
-          </button>          
-        </div>
-  
-        <p class="forgot-password">
-          ¿Olvidó su contraseña? Haga clic
-          <button type="button" class="link" (click)="goToRecuperar()">aquí</button>
-        </p>               
-      </form>
-    </div>
+  <div class="image-panel">
+    <img src="assets/img/ImagenLogin1.png" alt="Imagen de Login" />
   </div>
-  
+
+  <div class="form-panel">
+    <h2 class="title">Iniciar Sesión</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput formControlName="correo" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="contrasena" />
+      </mat-form-field>
+
+      <div class="button-group">
+        <button mat-raised-button color="primary" type="submit"
+          [disabled]="loginForm.invalid || isLoading">
+          {{ isLoading ? 'Ingresando...' : 'Iniciar' }}
+        </button>
+
+        <button mat-raised-button color="accent" type="button" (click)="goToRegister()">
+          Registrarse
+        </button>
+      </div>
+
+      <p class="forgot-password">
+        ¿Olvidó su contraseña? Haga clic
+        <button type="button" class="link" (click)="goToRecuperar()">aquí</button>
+      </p>
+    </form>
+  </div>
+</div>

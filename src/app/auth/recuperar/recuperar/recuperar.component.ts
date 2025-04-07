@@ -28,10 +28,6 @@ export class RecuperarComponent {
     });
   }
 
-  //Redirecciona a la vista de restablecer
-  goToRestablecer() {
-    this.router.navigate(['/auth/recuperar/restablecer']);
-  }
   //Vuelve al login
   goToLogin() {
     this.router.navigate(['/auth/login']);
@@ -41,11 +37,13 @@ export class RecuperarComponent {
     if (this.form.valid) {
       const identificacion = this.form.value.identificacion;
       console.log('Identificación enviada:', identificacion);
-      // Aquí iría la validación con backend
-
-      // Simulación de éxito
+  
+      localStorage.setItem('identificacionRecuperar', identificacion);
+  
       this.router.navigate(['/auth/restablecer']);
+    } else {
+      this.form.markAllAsTouched();
     }
-  }
+  }  
 }
 

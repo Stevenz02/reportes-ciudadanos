@@ -41,11 +41,23 @@ export class PerfilComponent {
 
   guardarCambios() {
     if (this.form.valid) {
-      localStorage.setItem('usuarioActual', JSON.stringify(this.form.value));
-      this.snackBar.open('✅ Perfil actualizado con éxito', 'Cerrar', {
+      // Obtener los datos actuales completos
+      const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
+  
+      // Actualizar solo los campos editados
+      const datosActualizados = {
+        ...usuarioActual,
+        ...this.form.value
+      };
+  
+      // Guardar el objeto completo actualizado
+      localStorage.setItem('usuarioActual', JSON.stringify(datosActualizados));
+  
+      this.snackBar.open('✅ Perfil actualizado con éxito', 'Aceptar', {
         duration: 3000,
-        panelClass: ['custom-snackbar']
-      });      
+        panelClass: ['success-snackbar']
+      });
+  
       this.router.navigate(['/auth/dashboard']);
     } else {
       this.form.markAllAsTouched();

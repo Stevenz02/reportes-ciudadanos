@@ -32,37 +32,28 @@ export class RestablecerComponent {
 
   onSubmit() {
     if (this.form.valid && this.passwordsCoinciden()) {
-      const nuevaPassword = this.form.value.nuevaPassword;
-      const identificacion = localStorage.getItem('identificacionRecuperar');
-
-      if (identificacion) {
-        const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-        const usuarioIndex = usuarios.findIndex((u: any) => u.identificacion === identificacion);
-
-        if (usuarioIndex !== -1) {
-          usuarios[usuarioIndex].password = nuevaPassword;
-          localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-          // ✅ Limpiar identificación temporal
-          localStorage.removeItem('identificacionRecuperar');
-
-          this.success = true;
-
-          setTimeout(() => {
-            this.router.navigate(['/auth/login']);
-          }, 2500);
-        } else {
-          alert('❌ Usuario no encontrado');
-        }
+      const identificacionRecuperar = localStorage.getItem('identificacionRecuperar');
+      const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual') || '{}');
+  
+      console.log('Identificación almacenada:', identificacionRecuperar);
+      console.log('Usuario actual:', usuarioActual);
+  
+      if (usuarioActual && usuarioActual.identificacion === identificacionRecuperar) {
+        // ✅ Cambiar la contraseña
+        usuarioActual.password = this.form.value.nuevaPassword;
+        localStorage.setItem('usuarioActual', JSON.stringify(usuarioActual));
+  
+        this.success = true;
+        setTimeout(() => {
+          this.router.navigate(['/auth/login']);
+        }, 2500);
       } else {
-        alert('❌ No se encontró la identificación, intente nuevamente.');
-        this.router.navigate(['/auth/recuperar']);
+        alert('❌ Usuario no encontrado');
       }
     } else {
       this.form.markAllAsTouched();
     }
-  }
+  }  
 
   passwordsCoinciden(): boolean {
     return this.form.value.nuevaPassword === this.form.value.confirmarPassword;

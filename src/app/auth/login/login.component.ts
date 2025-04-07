@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading = false; // 🚀 Loading para el botón
 
@@ -30,6 +30,9 @@ export class LoginComponent {
       correo: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required]
     });
+  }
+  ngOnInit(): void {
+    this.cargarDatosPrueba();
   }
 
   goToRegister() {
@@ -159,8 +162,6 @@ cargarDatosPrueba() {
 
   // Limpiamos usuario actual para que la demo arranque limpio
   localStorage.removeItem('usuarioActual');
-
-  this.mostrarSnackBar('🚀 Datos de prueba cargados exitosamente', 'success');
 }
 
 }

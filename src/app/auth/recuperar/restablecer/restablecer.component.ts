@@ -35,21 +35,23 @@ export class RestablecerComponent {
       const identificacion = localStorage.getItem('identificacionRecuperar');
       const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   
-      const index = usuarios.findIndex(
-        (usuario: any) => String(usuario.identificacion) === String(identificacion)
-      );      
+      const index = usuarios.findIndex((usuario: any) => usuario.identificacion === identificacion);
   
       if (index !== -1) {
         usuarios[index].password = this.form.value.nuevaPassword;
+  
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
   
         alert('✅ Contraseña actualizada correctamente');
+  
+        // Opcional: eliminamos la identificación guardada temporalmente
+        localStorage.removeItem('identificacionRecuperar');
   
         setTimeout(() => {
           this.router.navigate(['/auth/login']);
         }, 1500);
       } else {
-        alert('❌ Usuario no encontrado');
+        alert('❌ Usuario no encontrado al restablecer');
       }
     } else {
       this.form.markAllAsTouched();

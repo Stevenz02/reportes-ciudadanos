@@ -38,12 +38,9 @@ export class RecuperarComponent {
       const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
       const identificacion = this.form.value.identificacion;
   
-      const usuarioEncontrado = usuarios.find(
-        (usuario: any) => String(usuario.identificacion) === String(identificacion)
-      );      
+      const usuarioEncontrado = usuarios.find((usuario: any) => usuario.identificacion === identificacion);
   
       if (usuarioEncontrado) {
-        // Guardamos temporalmente la identificación
         localStorage.setItem('identificacionRecuperar', identificacion);
         this.router.navigate(['/auth/recuperar/restablecer']);
       } else {
@@ -52,6 +49,5 @@ export class RecuperarComponent {
     } else {
       this.form.markAllAsTouched();
     }
-  }    
+  }     
 }
-

@@ -1,44 +1,38 @@
 .title {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
 }
 
 .reporte-card {
-  padding: 16px;
-  margin-bottom: 20px;
+  background: #f9f9f9;
   border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: white;
 }
 
-.reporte-info {
-  flex: 1;
-
-  h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
-  }
-
-  p {
-    margin: 5px 0;
-    font-size: 14px;
-  }
+.reporte-info p {
+  margin: 5px 0;
 }
 
-.reporte-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  button {
-    width: 140px;
-  }
-}
 .button-group {
   display: flex;
-  gap: 8px;
-  justify-content: center;
+  gap: 10px;
   margin-top: 10px;
+}
+
+/* Estados de color */
+.pendiente {
+  color: #f1c40f;
+  font-weight: bold;
+}
+
+.aprobado {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.rechazado {
+  color: #e74c3c;
+  font-weight: bold;
 }

@@ -9,6 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CallApiServiceService } from '../../call-api-service.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -19,17 +23,18 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    HttpClientModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-
 export class RegisterComponent {
 
   registerForm!: FormGroup;
 
-  // Datos por país (ciudades e indicativo)
   datosPorPais: {
     [key: string]: {
       ciudades: string[],
@@ -44,76 +49,58 @@ export class RegisterComponent {
   paises = Object.keys(this.datosPorPais);
   ciudades: string[] = [];
 
-  // Datos para fecha de nacimiento
-  meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  dias = Array.from({ length: 31 }, (_, i) => i + 1);
-  anios = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
-
-  constructor(private fb: FormBuilder, private router: Router) {
-    // Construcción del formulario con validaciones
+  constructor(private fb: FormBuilder,private service: CallApiServiceService, private router: Router) {
     this.registerForm = this.fb.group({
-      nombre: ['', Validators.required],
+      name: ['', Validators.required],
       tipoIdentificacion: ['', Validators.required],
-      identificacion: ['', Validators.required],
-      mesNacimiento: ['', Validators.required],
-      diaNacimiento: ['', Validators.required],
-      anioNacimiento: ['', Validators.required],
-      pais: ['', Validators.required],
-      ciudad: ['', Validators.required],
-      direccion: ['', Validators.required],
+      documentNumber: ['', Validators.required],
+      dateOfBirth: [null, Validators.required],
+      country: ['', Validators.required],
+      residenceCity: ['', Validators.required],
+      address: ['', Validators.required],
       indicativo: ['', Validators.required],
-      telefono: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', Validators.required]
     }, { validators: passwordMatchValidator });
   }
-  
-  //Vuelve al login
+
   goToLogin() {
     this.router.navigate(['/auth/login']);
   }
 
-  // Al cambiar país, se actualizan las ciudades e indicativo
   onPaisChange(event: any) {
     const paisSeleccionado = event.value;
     const datos = this.datosPorPais[paisSeleccionado];
 
     this.ciudades = datos?.ciudades || [];
-    this.registerForm.get('ciudad')?.reset();
+    this.registerForm.get('residenceCity')?.reset();
     this.registerForm.get('indicativo')?.setValue(datos?.indicativo || '');
   }
 
-  // Enviar formulario si es válido
   onSubmit() {
     if (this.registerForm.valid) {
       const userData = this.registerForm.value;
   
-      // ✅ Paso 1: Traemos el array de usuarios existente
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-  
-      // ✅ Paso 2: Agregamos el nuevo usuario al array
-      usuarios.push(userData);
-  
-      // ✅ Paso 3: Guardamos el array actualizado en el localStorage
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-  
-      // ✅ Paso 4: (Opcional) Guardamos el usuario actual si quieres que quede registrado en sesión
-      localStorage.setItem('usuarioActual', JSON.stringify(userData));
-  
-      console.log('✅ Registro guardado en localStorage:', userData);
-  
-      // ✅ Paso 5: Redirige al login después del registro
-      alert('✅ Registro exitoso. Ahora puedes iniciar sesión.');
-      this.router.navigate(['/auth/login']);
+      this.service.crearUsuario(userData).subscribe({
+        next: (response) => {
+          console.log('✅ Registro exitoso:', response);
+          alert('✅ Registro exitoso. Ahora puedes iniciar sesión.');
+          this.router.navigate(['/auth/login']);
+        },
+        error: (error) => {
+          console.error('❌ Error al registrar el usuario:', error);
+          alert('❌ Ocurrió un error al registrar el usuario. Por favor, intenta nuevamente.');
+        }
+      });
     } else {
       this.registerForm.markAllAsTouched();
     }
   }  
 }
 
-// Validador para asegurar que las contraseñas coincidan
+// Validador personalizado para las contraseñas
 export const passwordMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
   const password = group.get('password')?.value;
   const confirm = group.get('confirmarPassword')?.value;

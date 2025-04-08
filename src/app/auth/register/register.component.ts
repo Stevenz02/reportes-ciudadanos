@@ -41,7 +41,7 @@ export class RegisterComponent {
       indicativo: string
     }
   } = {
-    'Colombia': { ciudades: ['Armenia', 'Bogotá', 'Medellín'], indicativo: '+57' },
+    'Colombia': { ciudades: ['ARMENIA', 'BOGOTA', 'MEDELLIN'], indicativo: '+57' },
     'México': { ciudades: ['CDMX', 'Guadalajara', 'Monterrey'], indicativo: '+52' },
     'Estados Unidos': { ciudades: ['New York', 'Los Angeles', 'Chicago'], indicativo: '+1' }
   };

@@ -2,18 +2,23 @@
 
 <form [formGroup]="form" (ngSubmit)="guardarCambios()" class="form-container">
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Nombre</mat-label>
-    <input matInput formControlName="nombre" />
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Correo electrónico</mat-label>
-    <input matInput formControlName="correo" />
+    <input matInput formControlName="email" />
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Teléfono</mat-label>
-    <input matInput formControlName="telefono" />
+    <input matInput formControlName="phone" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Dirección</mat-label>
+    <input matInput formControlName="address" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ciudad de Residencia</mat-label>
+    <input matInput formControlName="residenceCity" />
   </mat-form-field>
 
   <div class="button-group">
@@ -21,3 +26,4 @@
     <button mat-raised-button color="warn" type="button" (click)="eliminarCuenta()">Eliminar Cuenta</button>
   </div>
 </form>
+

@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CallApiServiceService } from '../../call-api-service.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatSnackBarModule
   ],
+  providers: [CallApiServiceService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -25,10 +27,10 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading = false; // 🚀 Loading para el botón
 
-  constructor(private fb: FormBuilder, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private router: Router, private snackBar: MatSnackBar, private apiService: CallApiServiceService) {
     this.loginForm = this.fb.group({
-      correo: ['', [Validators.required, Validators.email]],
-      contrasena: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
     });
   }
   ngOnInit(): void {
@@ -47,42 +49,39 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
   
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-      const correoIngresado = this.loginForm.value.correo;
-      const passwordIngresado = this.loginForm.value.contrasena;
+      const loginData = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
   
-      // ✅ Buscar usuario por correo y contraseña
-      const usuarioEncontrado = usuarios.find((usuario: any) =>
-        usuario.correo === correoIngresado && usuario.password === passwordIngresado
-      );
+      this.apiService.login(loginData).subscribe({
+        next: (response: any) => {
+          console.log('✅ Login exitoso:', response);
+          console.log('🟢 Token recibido:', response.token); // Aquí ves tu token
+        
+          // Opcionalmente lo puedes guardar en localStorage
+          localStorage.setItem('token', response.token);
+          this.isLoading = false;
   
-      setTimeout(() => {
-        if (usuarioEncontrado) {
-          // ✅ Guardamos en localStorage como usuario actual
-          localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
+          // ✅ Opcional: guardar el token en localStorage
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('usuarioActual', JSON.stringify(response));
   
           this.mostrarSnackBar('✅ Inicio de sesión exitoso', 'success');
   
-          // ✅ Si es admin, lo llevamos a la vista admin
-          if (usuarioEncontrado.correo === 'admin@gmail.com') {
-            this.router.navigate(['/auth/admin']);
-          } else {
-            this.router.navigate(['/auth/dashboard']);
-          }
-  
-        } else {
+          // ✅ Redirigir según tipo de usuario si tienes roles
+          this.router.navigate(['/auth/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading = false;
           this.mostrarSnackBar('❌ Usuario o contraseña incorrectos', 'error');
+          console.error('Error al iniciar sesión:', error);
         }
-  
-        this.isLoading = false;
-  
-      }, 800);
-  
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }
-  }
-  
+  }  
   
   mostrarSnackBar(mensaje: string, tipo: 'success' | 'error') {
     this.snackBar.open(mensaje, 'Aceptar', {
@@ -93,51 +92,10 @@ export class LoginComponent implements OnInit {
   // 👇 Agrega este método dentro de tu clase LoginComponent
   cargarDatosPrueba() {
     // Verificar si ya existen datos
-    const usuariosExistentes = localStorage.getItem('usuarios');
     const reportesExistentes = localStorage.getItem('reportes');
   
     // Solo cargar datos de prueba si no existen
-    if (!usuariosExistentes && !reportesExistentes) {
-      // Precargar usuarios (incluyendo admin)
-      const usuarios = [
-        {
-          nombre: "Steven Morales",
-          tipoIdentificacion: "CC",
-          identificacion: "1004916715",
-          mesNacimiento: "Mayo",
-          diaNacimiento: 30,
-          anioNacimiento: 2002,
-          pais: "Colombia",
-          ciudad: "Armenia",
-          direccion: "CRA 20 31-55",
-          indicativo: "+57",
-          telefono: "3013031360",
-          correo: "steven@gmail.com",
-          password: "12345678",
-          confirmarPassword: "12345678",
-          rol: "usuario"
-        },
-        {
-          nombre: "Admin",
-          tipoIdentificacion: "CC",
-          identificacion: "1234567890",
-          mesNacimiento: "Enero",
-          diaNacimiento: 1,
-          anioNacimiento: 1990,
-          pais: "Colombia",
-          ciudad: "Bogotá",
-          direccion: "Admin street 123",
-          indicativo: "+57",
-          telefono: "3000000000",
-          correo: "admin@gmail.com",
-          password: "admin123",
-          confirmarPassword: "admin123",
-          rol: "admin"
-        }
-      ];
-  
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-  
+    if (!reportesExistentes) {
       // Precargar reportes de prueba
       const reportes = [
         {
@@ -165,9 +123,6 @@ export class LoginComponent implements OnInit {
       ];
   
       localStorage.setItem('reportes', JSON.stringify(reportes));
-  
-      // Limpiar usuario actual para iniciar limpio
-      localStorage.removeItem('usuarioActual');
   
       console.log('Datos de prueba cargados correctamente.');
     } else {

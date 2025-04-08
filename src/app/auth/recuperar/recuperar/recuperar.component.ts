@@ -42,7 +42,7 @@ export class RecuperarComponent {
   
       if (usuarioEncontrado) {
         localStorage.setItem('identificacionRecuperar', identificacion);
-        this.router.navigate(['/auth/recuperar/restablecer']);
+        this.router.navigate(['/auth/restablecer']);
       } else {
         alert('❌ Usuario no encontrado');
       }

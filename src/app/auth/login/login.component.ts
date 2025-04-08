@@ -91,79 +91,89 @@ export class LoginComponent implements OnInit {
     });
   }
   // 👇 Agrega este método dentro de tu clase LoginComponent
-cargarDatosPrueba() {
-  // Precargar usuarios (incluyendo admin)
-  const usuarios = [
-    {
-      nombre: "Steven Morales",
-      tipoIdentificacion: "CC",
-      identificacion: "1004916715",
-      mesNacimiento: "Mayo",
-      diaNacimiento: 30,
-      anioNacimiento: 2002,
-      pais: "Colombia",
-      ciudad: "Armenia",
-      direccion: "CRA 20 31-55",
-      indicativo: "+57",
-      telefono: "3013031360",
-      correo: "steven@gmail.com",
-      password: "12345678",
-      confirmarPassword: "12345678",
-      rol: "usuario"
-    },
-    {
-      nombre: "Admin",
-      tipoIdentificacion: "CC",
-      identificacion: "1234567890",
-      mesNacimiento: "Enero",
-      diaNacimiento: 1,
-      anioNacimiento: 1990,
-      pais: "Colombia",
-      ciudad: "Bogotá",
-      direccion: "Admin street 123",
-      indicativo: "+57",
-      telefono: "3000000000",
-      correo: "admin@gmail.com",
-      password: "admin123",
-      confirmarPassword: "admin123",
-      rol: "admin"
+  cargarDatosPrueba() {
+    // Verificar si ya existen datos
+    const usuariosExistentes = localStorage.getItem('usuarios');
+    const reportesExistentes = localStorage.getItem('reportes');
+  
+    // Solo cargar datos de prueba si no existen
+    if (!usuariosExistentes && !reportesExistentes) {
+      // Precargar usuarios (incluyendo admin)
+      const usuarios = [
+        {
+          nombre: "Steven Morales",
+          tipoIdentificacion: "CC",
+          identificacion: "1004916715",
+          mesNacimiento: "Mayo",
+          diaNacimiento: 30,
+          anioNacimiento: 2002,
+          pais: "Colombia",
+          ciudad: "Armenia",
+          direccion: "CRA 20 31-55",
+          indicativo: "+57",
+          telefono: "3013031360",
+          correo: "steven@gmail.com",
+          password: "12345678",
+          confirmarPassword: "12345678",
+          rol: "usuario"
+        },
+        {
+          nombre: "Admin",
+          tipoIdentificacion: "CC",
+          identificacion: "1234567890",
+          mesNacimiento: "Enero",
+          diaNacimiento: 1,
+          anioNacimiento: 1990,
+          pais: "Colombia",
+          ciudad: "Bogotá",
+          direccion: "Admin street 123",
+          indicativo: "+57",
+          telefono: "3000000000",
+          correo: "admin@gmail.com",
+          password: "admin123",
+          confirmarPassword: "admin123",
+          rol: "admin"
+        }
+      ];
+  
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  
+      // Precargar reportes de prueba
+      const reportes = [
+        {
+          id: "rep-1",
+          titulo: "Accidente en la calle 12",
+          categoria: "Accidente",
+          descripcion: "Un accidente de tránsito con varios vehículos involucrados.",
+          latitud: 4.5339,
+          longitud: -75.6811,
+          imagen: "",
+          estado: "Pendiente",
+          usuarioId: "1004916715"
+        },
+        {
+          id: "rep-2",
+          titulo: "Emergencia médica en el parque",
+          categoria: "Emergencia",
+          descripcion: "Persona herida esperando ambulancia.",
+          latitud: 4.5335,
+          longitud: -75.6800,
+          imagen: "",
+          estado: "Pendiente",
+          usuarioId: "1004916715"
+        }
+      ];
+  
+      localStorage.setItem('reportes', JSON.stringify(reportes));
+  
+      // Limpiar usuario actual para iniciar limpio
+      localStorage.removeItem('usuarioActual');
+  
+      console.log('Datos de prueba cargados correctamente.');
+    } else {
+      console.log('Datos existentes detectados. No se cargaron datos de prueba.');
     }
-  ];
-
-  localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-  // Precargar reportes de prueba
-  const reportes = [
-    {
-      id: "rep-1",
-      titulo: "Accidente en la calle 12",
-      categoria: "Accidente",
-      descripcion: "Un accidente de tránsito con varios vehículos involucrados.",
-      latitud: 4.5339,
-      longitud: -75.6811,
-      imagen: "",
-      estado: "Pendiente",
-      usuarioId: "1004916715"
-    },
-    {
-      id: "rep-2",
-      titulo: "Emergencia médica en el parque",
-      categoria: "Emergencia",
-      descripcion: "Persona herida esperando ambulancia.",
-      latitud: 4.5335,
-      longitud: -75.6800,
-      imagen: "",
-      estado: "Pendiente",
-      usuarioId: "1004916715"
-    }
-  ];
-
-  localStorage.setItem('reportes', JSON.stringify(reportes));
-
-  // Limpiamos usuario actual para que la demo arranque limpio
-  localStorage.removeItem('usuarioActual');
-}
-
+  }  
 }
 
 

@@ -14,8 +14,8 @@
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Confirmar contraseña</mat-label>
-    <input matInput type="password" formControlName="confirmarPassword" />
-    <mat-error *ngIf="form.get('confirmarPassword')?.hasError('passwordMismatch')">
+    <input matInput type="password" formControlName="confirmPassword" />
+    <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
       Las contraseñas no coinciden.
     </mat-error>    
   </mat-form-field>

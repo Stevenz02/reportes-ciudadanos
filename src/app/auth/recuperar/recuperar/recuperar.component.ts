@@ -46,7 +46,7 @@ export class RecuperarComponent {
       const documentNumber = this.form.value.documentNumber;
 
       // Opcional: Verificar existencia del usuario (si quieres)
-      this.apiService.getUserByDocumentNumber(documentNumber).subscribe({
+      this.apiService.checkIfIdExists(documentNumber).subscribe({
         next: (user) => {
           this.recoveryService.setDocumentNumber(documentNumber);
           this.router.navigate(['/auth/restablecer']);

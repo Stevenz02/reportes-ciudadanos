@@ -57,20 +57,25 @@ export class LoginComponent implements OnInit {
       this.apiService.login(loginData).subscribe({
         next: (response: any) => {
           console.log('✅ Login exitoso:', response);
-          console.log('🟢 Token recibido:', response.token); // Aquí ves tu token
-        
-          // Opcionalmente lo puedes guardar en localStorage
-          localStorage.setItem('token', response.token);
-          this.isLoading = false;
+          console.log('🟢 Token recibido:', response.token);
   
-          // ✅ Opcional: guardar el token en localStorage
+          // Guardar token y usuario actual
           localStorage.setItem('token', response.token);
           localStorage.setItem('usuarioActual', JSON.stringify(response));
   
+          this.isLoading = false;
           this.mostrarSnackBar('✅ Inicio de sesión exitoso', 'success');
   
-          // ✅ Redirigir según tipo de usuario si tienes roles
-          this.router.navigate(['/auth/dashboard']);
+          // 🚀 Redirigir según el tipo de usuario
+          const userType = response.userType;
+  
+          if (userType === 'ADMINISTRADOR') {
+            this.router.navigate(['/auth/admin']);
+          } else if (userType === 'CLIENTE') {
+            this.router.navigate(['/auth/dashboard']);
+          } else {
+            this.mostrarSnackBar('⚠️ Tipo de usuario no reconocido', 'error');
+          }
         },
         error: (error) => {
           this.isLoading = false;

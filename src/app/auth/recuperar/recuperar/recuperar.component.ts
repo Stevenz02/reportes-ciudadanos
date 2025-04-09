@@ -5,6 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CallApiServiceService } from '../../../call-api-service.service';
+import { RecoveryService } from '../../../services/recovery.service';
 
 @Component({
   selector: 'app-recuperar',
@@ -16,15 +18,21 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatButtonModule
   ],
+  providers: [CallApiServiceService],
   templateUrl: './recuperar.component.html',
   styleUrls: ['./recuperar.component.scss']
 })
 export class RecuperarComponent {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    private apiService: CallApiServiceService,
+    private recoveryService: RecoveryService
+  ) {
     this.form = this.fb.group({
-      identificacion: ['', Validators.required]
+      documentNumber: ['', Validators.required]
     });
   }
 
@@ -35,19 +43,20 @@ export class RecuperarComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-      const identificacion = this.form.value.identificacion;
-  
-      const usuarioEncontrado = usuarios.find((usuario: any) => usuario.identificacion === identificacion);
-  
-      if (usuarioEncontrado) {
-        localStorage.setItem('identificacionRecuperar', identificacion);
-        this.router.navigate(['/auth/restablecer']);
-      } else {
-        alert('❌ Usuario no encontrado');
-      }
+      const documentNumber = this.form.value.documentNumber;
+
+      // Opcional: Verificar existencia del usuario (si quieres)
+      this.apiService.getUserByDocumentNumber(documentNumber).subscribe({
+        next: (user) => {
+          this.recoveryService.setDocumentNumber(documentNumber);
+          this.router.navigate(['/auth/restablecer']);
+        },
+        error: () => {
+          alert('❌ Usuario no encontrado');
+        }
+      });
     } else {
       this.form.markAllAsTouched();
     }
-  }     
+  }
 }

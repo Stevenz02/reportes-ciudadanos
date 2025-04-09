@@ -3,13 +3,18 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Ingrese su número de identificación</mat-label>
-    <input matInput formControlName="identificacion" />
+    <input matInput formControlName="documentNumber" />
+    <mat-error *ngIf="form.get('documentNumber')?.hasError('required')">
+      El número de identificación es obligatorio.
+    </mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-    Verificar
-  </button>  
-  <button mat-raised-button color="primary" (click)="goToLogin()">
-    Cancelar
-  </button>
+  <div class="button-group">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      Verificar
+    </button>  
+    <button mat-raised-button color="accent" type="button" (click)="goToLogin()">
+      Cancelar
+    </button>
+  </div>
 </form>

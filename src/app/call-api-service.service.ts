@@ -34,5 +34,13 @@ export class CallApiServiceService {
   
     return this.http.put(this.apiUrl + `users/${id}`, data, { headers });
   }
+
+  getUserByDocumentNumber(documentNumber: string) {
+    return this.http.get(`${this.apiUrl}users/document/${documentNumber}`);
+  }
+  
+  changePassword(documentNumber: string, data: any) {
+    return this.http.post(`${this.apiUrl}users/changePassword/${documentNumber}`, data);
+  }
   
 }
